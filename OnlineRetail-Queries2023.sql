@@ -369,28 +369,52 @@ ORDER BY InvoiceDate
 --14. CANCELLED ORDERS
 SELECT * FROM CancelledOrders2023
 --COUNTRY WITH THE HIGHEST CANCELLED ORDERS
-SELECT Country, COUNT(Sales) AS Number
+--BY SALES
+SELECT Country, SUM(Sales) AS CancelledSales
 FROM CancelledOrders2023
 GROUP BY Country
-ORDER BY Number DESC
+ORDER BY CancelledSales DESC
+--BY NO. OF ORDERS
+SELECT Country, COUNT(Sales) AS CancelledOrders 
+FROM CancelledOrders2023 
+GROUP BY Country 
+ORDER BY CancelledOrders DESC
 --CUSTOMER ID WITH THE HIGHEST CANCELLED ORDERS
-SELECT CustomerID, COUNT(Sales) AS Number
+--BY SALES
+SELECT CustomerID, Country, SUM(Sales) AS CancelledSales
 FROM CancelledOrders2023
-GROUP BY CustomerID
-ORDER BY Number DESC
---PRODUCT WITH THE HIGHES CANCELLED ORDERS
-SELECT StockCode, Description, COUNT(Sales) AS Number
+GROUP BY CustomerID, Country
+ORDER BY CancelledSales DESC
+--BY NO. OF ORDERS
+SELECT CustomerID, Country, COUNT(Sales) AS CancelledOrders 
+FROM CancelledOrders2023 
+GROUP BY CustomerID, Country 
+ORDER BY CancelledOrders DESC
+--PRODUCT WITH THE HIGHEST CANCELLED ORDERS
+--BY SALES
+SELECT StockCode, Description,SUM(Sales) AS CancelledSales
 FROM CancelledOrders2023
 GROUP BY StockCode, Description
-ORDER BY Number DESC
+ORDER BY CancelledSales DESC
+--BY NO. OF ORDERS
+SELECT StockCode, Description, COUNT(Sales) AS CancelledOrders 
+FROM CancelledOrders2023 
+GROUP BY StockCode, Description
+ORDER BY CancelledOrders DESC
 --DATE WITH THE HIGHEST CANCELLATIONS
-SELECT CAST(InvoiceDate AS date) AS Date, COUNT(Sales) AS Number
+--BY SALES
+SELECT CAST(InvoiceDate AS date) AS Date, SUM(Sales) AS CancelledSales
 FROM CancelledOrders2023
 GROUP BY CAST(InvoiceDate AS date)
-ORDER BY Number DESC
+ORDER BY CancelledSales DESC
+--BY NO. OF ORDERS
+SELECT CAST(InvoiceDate AS date) AS Date, COUNT(Sales) AS CancelledOrders
+FROM CancelledOrders2023
+GROUP BY CAST(InvoiceDate AS date)
+ORDER BY CancelledOrders DESC
 GO
 --15. CREATE A PROCEDURE
---A PROCEDURE WILL GIVE QUICK RESULTS OF WHAT WE WANT TO KNOW
+--THE PROCEDURE WILL GIVE QUICK RESULTS OF WHAT WE WANT TO KNOW
 --PROCEDURE FOR RUNNING/ACCUMULATING TOTAL FOR THE WHOLE DATASET
 CREATE PROCEDURE WholeOnlineRetail2023 AS
 BEGIN
